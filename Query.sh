@@ -3,7 +3,9 @@
 #Example: ./WeatherDataCollector.sh --initial_time [YYYY-MM-DD] --final_time[YYYY-MM-DD] --weatherstation_id[Meteo10] --Sensor[humidity]
 
 inicio_ns=`date +%s%N`
-inicio=`date +%s`
+inicio_s=`date +%s`
+inicio_m=`date +%M`
+meteo=1
 
 while [ "$1" != "" ]; do
     case $1 in
@@ -80,12 +82,27 @@ fi
 #echo $initial_date
 #echo $final_date
 
-cqlsh -e "SELECT $sensor FROM weatherstation.$table WHERE weatherstation_id = '$weatherstation_id' AND date >= '$initial_date' AND date <= '$final_date' ;" 10.200.117.244  > Data_"$table"_"$weatherstation_id"_"$sensor"_"$initial_date"_"$final_date".dat
+if [ "$weatherstation_id" = "all" ]
+then 
+	while [ $meteo -le 11 ]; do
+	
+	cqlsh -e "SELECT $sensor FROM weatherstation.$table WHERE weatherstation_id = 'Meteo$meteo' AND date >= '$initial_date' AND date <= '$final_date' ORDER BY date_full ASC ;" 10.200.117.244  > Data_"$table"_"$weatherstation_id"_"$sensor"_"$initial_date"_"$final_date".dat
+	
+	let meteo=meteo+1
+
+	done	
+
+else
+	cqlsh -e "SELECT $sensor FROM weatherstation.$table WHERE weatherstation_id = '$weatherstation_id' AND date >= '$initial_date' AND date <= '$final_date' ORDER BY date_full ASC ;" 10.200.117.244  > Data_"$table"_"$weatherstation_id"_"$sensor"_"$initial_date"_"$final_date".dat
+
+fi
 
 fin_ns=`date +%s%N`
-fin=`date +%s`
+fin_s=`date +%s`
+fin_m=`date +%M`
 
 let total_ns=$fin_ns-$inicio_ns
-let total=$fin-$inicio
-echo
-echo "SELECT $sensor FROM $table.$weatherstation_id WHERE date >= $initial_date AND date <= $final_date, it has taken: $total_ns [ns], $total [s]" >> timeQuery.dat
+let total_s=$fin_s-$inicio_s
+total_m=$(($total_s/60))
+
+echo "SELECT $sensor FROM $table.$weatherstation_id WHERE date >= $initial_date AND date <= $final_date, it has taken: $total_ns [ns], $total [s], $total_m [min]" >> timeQuery.dat

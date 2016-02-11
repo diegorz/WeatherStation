@@ -1,0 +1,8 @@
+SELECT * FROM data_2016_meteo4 WHERE date >= 2016-02-01 AND date <= 2016-02-03, it has taken: 30237012375 [ns], 30 [s], 0 [min]
+SELECT * FROM data_2016 WHERE weatherstation_id = 'Meteo4' AND date = '2016-02-01' AND date = '2016-02-03', it has taken: 21261971646 [ns], 21 [s], 0 [min]
+SELECT * FROM data_2016 WHERE weatherstation_id = 'Meteo2' AND date = '2016-01-01' AND date = '2016-01-31', it has taken: 435511351545 [ns], 436 [s], 7 [min]
+SELECT * FROM data_2016_meteo2 WHERE date >= 2016-01-01 AND date <= 2016-01-31, it has taken: 2247134935337 [ns], 2247 [s], 37 [min]
+SELECT humidity FROM data_2015_Meteo4 WHERE date >= 2015-06-04 AND date <= 2015-07-08, it has taken: 438316467317 [ns], 438 [s], 7 [min]
+SELECT humidity FROM data_2015 WHERE weatherstation_id = 'Meteo4' AND date = '2015-06-04' AND date = '2015-07-08', it has taken: 24164274370 [ns], 24 [s], 0 [min]
+SELECT windspeed FROM data_2015 WHERE weatherstation_id = 'Meteo4' AND date = '2015-03-04' AND date = '2015-06-28', it has taken: 79684518292 [ns], 79 [s], 1 [min]
+SELECT * FROM data_2015 WHERE weatherstation_id = 'Meteo3' AND date = '2015-03-01' AND date = '2015-03-31', it has taken: 21357907431 [ns], 22 [s], 0 [min]

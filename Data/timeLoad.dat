@@ -9,7 +9,11 @@ COPY weatherstation.data_2015_Meteo8 between 2015-01-01 and 2015-12-31, it has t
 COPY weatherstation.data_2015_Meteo9 between 2015-01-01 and 2015-12-31, it has taken: 1851975208864 [ns], 1852 [s], 30 [min]
 COPY weatherstation.data_2015_Meteo10 between 2015-01-01 and 2015-12-31, it has taken: 2037452148428 [ns], 2038 [s], 33 [min]
 COPY weatherstation.data_2015_Meteo11 between 2015-01-01 and 2015-12-31, it has taken: 806467855913 [ns], 806 [s], 13 [min]
-COPY weatherstation.data_2015_AllMeteo between 2015-01-01 and 2015-12-31, it has taken: 40926752691421 [ns], 40927 [s], 682 [min]
+
+COPY weatherstation.data_2015_AllMeteo between 2015-01-01 and 2015-12-31, it has taken: 40926752691421 [ns], 40927 [s], 682 [min] (8[GB] RAM)	
+
+COPY weatherstation.data_2015_ALLMeteo between 2015-01-01 and 2015-12-31, it has taken: 25022268463935 [ns], 25022 [s], 417 [min] (16[GB] RAM)
+
 COPY weatherstation.data_2016_Meteo1 between 2016-01-01 and 2016-12-31, it has taken: 330235974654 [ns], 330 [s], 5 [min]
 COPY weatherstation.data_2016_Meteo2 between 2016-01-01 and 2016-12-31, it has taken: 863003016442 [ns], 863 [s], 14 [min]
 COPY weatherstation.data_2016_Meteo3 between 2016-01-01 and 2016-12-31, it has taken: 821205182310 [ns], 821 [s], 13 [min]
@@ -21,5 +25,8 @@ COPY weatherstation.data_2016_Meteo8 between 2016-01-01 and 2016-12-31, it has t
 COPY weatherstation.data_2016_Meteo9 between 2016-01-01 and 2016-12-31, it has taken: 521345829184 [ns], 521 [s], 8 [min]
 COPY weatherstation.data_2016_Meteo10 between 2016-01-01 and 2016-12-31, it has taken: 573815352790 [ns], 573 [s], 9 [min]
 COPY weatherstation.data_2016_Meteo11 between 2016-01-01 and 2016-12-31, it has taken: 209285348331 [ns], 210 [s], 3 [min]
+
 COPY weatherstation.data_2016_ALLMeteo between 2016-01-01 and 2016-12-31, it has taken: 7161384032978 [ns], 7161 [s], 119 [min]
+
 COPY weatherstation.data_2016_ALLMeteo between 2016-01-01 and 2016-02-31, it has taken: 2755062803592 [ns], 2756 [s], 45 [min]
+

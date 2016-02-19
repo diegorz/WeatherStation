@@ -1,7 +1,8 @@
 #!/bin/bash
-# ALMA WEATHER DATA COLLECTOR
+#
+#Example: ./WeatherDataCollector.sh [-f Table initial_date final_date]
 
-inicio_ms=`date +%s%3N`
+inicio_ns=`date +%s%N`
 inicio_s=`date +%s`
 meteo=1
 
@@ -9,12 +10,10 @@ while [ "$1" != "" ]; do
     case $1 in
 
 ######################## BY YEAR ##################################
-	-y | --year )		shift
-				ip_cluster=$1
-				table=$2
-				initial_date=$3
-				final_date=$4
-				
+	-d | --download )	shift
+				initial_date=$1
+				final_date=$2
+
 				initial_year=`echo ${initial_date:6:4}`
 				initial_month=`echo ${initial_date:3:2}`
 				initial_day=`echo ${initial_date:0:2}`
@@ -64,8 +63,7 @@ while [ "$1" != "" ]; do
 				;;
 
 ############################# DEFAULT : TODAY DATA FOR TABLE ######################################
-        -t | -today )		ip_cluster=$2
-				table=$3		
+        -t | -today )		table=$2		
 				today=`date +%F`
 				year=`date +%Y`
 				month=`date +%m`
@@ -76,13 +74,11 @@ while [ "$1" != "" ]; do
 				
 					sed -e '1,4d' -e 's/; /,/g' -e 's/T/ /' -e 's/^/Meteo'$meteo','$month'-'$day',/' Meteo"$meteo"_$today.dat > Meteo"$meteo"_$today.csv
 
-					$CQL -e "COPY weatherstation.$table (weatherstation_id, date, date_full, humidity, temperature , dewpoint , winddirection , windspeed , pressure ) FROM 'Meteo"$meteo"_$today.csv' ;" $ip_cluster	
-	
 					let meteo=meteo+1
 
 				done	
 
-				fin_ms=`date +%s%3N`	
+				fin_ns=`date +%s%N`	
 				fin=`date +%s`
 				
 				let total_ns=$fin_ns-$inicio_ns
@@ -91,14 +87,14 @@ while [ "$1" != "" ]; do
 			
 				echo "COPY weatherstation.$table for $today, it has taken: $total_ns [ns], $total_s [s], $total_m [min]" >> timeLoad.dat
 				
-				rm  Meteo*
+				rm  Meteo*.dat
 
 				exit 1
 				;;
 
 ############################# HELP ####################################	
 
-	-h | --help )		echo "[-y IP_Cluster Table Initial_Date Final_Date] [-t IP_Cluster Table] [-h Help]"
+	-h | --help )		echo "[-y Table Initial_Date Final_Date] [-t Table] [-h Help]"
 				exit 1
 				
 
@@ -108,9 +104,9 @@ done
 
 
 ############################ MAIN FULL ######################################
-#while [ $less_year -ge 0 ]; do
-#	echo "YEAR: $year"
-#	echo "LESS_YEAR: $less_year"	
+while [ $less_year -ge 0 ]; do
+	echo "YEAR: $year"
+	echo "LESS_YEAR: $less_year"	
 	
 	if [ $month -eq 13 ]
 	then
@@ -118,9 +114,9 @@ done
 	fi
 
 	while [ $month -le 12 ] ; do
-#		echo
-#		echo "MONTH: $month"		
-#		echo
+		echo
+		echo "MONTH: $month"		
+		echo
 
 		if [ "$day" -eq 32 ]
 		then
@@ -128,10 +124,9 @@ done
 		fi
 		
 		while [ $day -le 31 ] ; do
-		#	echo
-		#	echo "DAY: $day"		
-		#	echo
-		
+			echo
+			echo "DAY: $day"		
+			echo
 			if [ $meteo -eq 12 ]
 			then 
 				meteo="1"
@@ -149,8 +144,6 @@ done
 						wget http://weather.aiv.alma.cl/data/data/files/$year/0$month/Meteo"$meteo"_$year-0$month-0$day.dat
 						
 						sed -e '1,4d' -e 's/; /,/g' -e 's/T/ /' -e 's/^/Meteo'$meteo',0'$month'-0'$day',/' Meteo"$meteo"_$year-0$month-0$day.dat > Meteo"$meteo"_$year-0$month-0$day.csv
-						
-						$CQL -e "COPY weatherstation.$table (weatherstation_id, date, date_full, humidity, temperature , dewpoint , winddirection , windspeed , pressure ) FROM 'Meteo"$meteo"_$year-0$month-0$day.csv' ;" $ip_cluster
 					
 
 					############ else: year < 2011 (dat.tgz) ###########
@@ -160,8 +153,6 @@ done
 						tar -zxvf Meteo"$meteo"_$year-0$month-0$day.dat.tgz
 						
 						sed -e '1,4d' -e 's/; /,/g' -e 's/T/ /' -e 's/^/Meteo'$meteo',0'$month'-0'$day',/' Meteo"$meteo"_$year-0$month-0$day.dat > Meteo"$meteo"_$year-0$month-0$day.csv
-						
-						$CQL -e "COPY weatherstation.$table (weatherstation_id, date, date_full, humidity, temperature , dewpoint , winddirection , windspeed , pressure ) FROM 'Meteo"$meteo"_$year-0$month-0$day.csv' ;" $ip_cluster
 						
 					fi
 
@@ -174,8 +165,6 @@ done
 						wget http://weather.aiv.alma.cl/data/data/files/$year/0$month/Meteo"$meteo"_$year-0$month-$day.dat
 						
 						sed -e '1,4d' -e 's/; /,/g' -e 's/T/ /' -e 's/^/Meteo'$meteo',0'$month'-'$day',/' Meteo"$meteo"_$year-0$month-$day.dat > Meteo"$meteo"_$year-0$month-$day.csv
-						
-						$CQL -e "COPY weatherstation.$table (weatherstation_id, date, date_full, humidity, temperature , dewpoint , winddirection , windspeed , pressure ) FROM 'Meteo"$meteo"_$year-0$month-$day.csv' ;" $ip_cluster
 					
 					############ else: year < 2011 (dat.tgz) ###########
 					else
@@ -184,8 +173,6 @@ done
 						tar -zxvf Meteo"$meteo"_$year-0$month-$day.dat.tgz
 					
 						sed -e '1,4d' -e 's/; /,/g' -e 's/T/ /' -e 's/^/Meteo'$meteo',0'$month'-'$day',/' Meteo"$meteo"_$year-0$month-$day.dat > Meteo"$meteo"_$year-0$month-$day.csv
-						
-						$CQL -e "COPY weatherstation.$table (weatherstation_id, date, date_full, humidity, temperature , dewpoint , winddirection , windspeed , pressure ) FROM 'Meteo"$meteo"_$year-0$month-$day.csv' ;" $ip_cluster					
 					
 					fi
 
@@ -199,7 +186,6 @@ done
 						wget http://weather.aiv.alma.cl/data/data/files/$year/$month/Meteo"$meteo"_$year-$month-0$day.dat
 	
 						sed -e '1,4d' -e 's/; /,/g' -e 's/T/ /' -e 's/^/Meteo'$meteo','$month'-0'$day',/' Meteo"$meteo"_$year-$month-0$day.dat > Meteo"$meteo"_$year-$month-0$day.csv					
-						$CQL -e "COPY weatherstation.$table (weatherstation_id, date, date_full, humidity, temperature , dewpoint , winddirection , windspeed , pressure ) FROM 'Meteo"$meteo"_$year-$month-0$day.csv' ;" $ip_cluster
 
 					############ else: year < 2011 (dat.tgz) ###########
 					else
@@ -208,8 +194,6 @@ done
 						tar -zxvf Meteo"$meteo"_$year-$month-0$day.dat.tgz
 						
 						sed -e '1,4d' -e 's/; /,/g' -e 's/T/ /' -e 's/^/Meteo'$meteo','$month'-0'$day',/' Meteo"$meteo"_$year-$month-0$day.dat > Meteo"$meteo"_$year-$month-0$day.csv
-						
-						$CQL -e "COPY weatherstation.$table (weatherstation_id, date, date_full, humidity, temperature , dewpoint , winddirection , windspeed , pressure ) FROM 'Meteo"$meteo"_$year-$month-0$day.csv' ;" $ip_cluster				
 
 					fi
 
@@ -223,8 +207,6 @@ done
 						wget http://weather.aiv.alma.cl/data/data/files/$year/$month/Meteo"$meteo"_$year-$month-$day.dat
 					
 						sed -e '1,4d' -e 's/; /,/g' -e 's/T/ /' -e 's/^/Meteo'$meteo','$month'-'$day',/' Meteo"$meteo"_$year-$month-$day.dat > Meteo"$meteo"_$year-$month-$day.csv	
-						
-						$CQL -e "COPY weatherstation.$table (weatherstation_id, date, date_full, humidity, temperature , dewpoint , winddirection , windspeed , pressure ) FROM 'Meteo"$meteo"_$year-$month-$day.csv' ;" $ip_cluster
 				
 					############ else: year < 2011 (dat.tgz) ###########
 					else
@@ -233,8 +215,6 @@ done
 						tar -zxvf Meteo"$meteo"_$year-$month-$day.dat.tgz
 
 						sed -e '1,4d' -e 's/; /,/g' -e 's/T/ /' -e 's/^/Meteo'$meteo','$month'-'$day',/' Meteo"$meteo"_$year-$month-$day.dat > Meteo"$meteo"_$year-$month-$day.csv
-						
-						$CQL -e "COPY weatherstation.$table (weatherstation_id, date, date_full, humidity, temperature , dewpoint , winddirection , windspeed , pressure ) FROM 'Meteo"$meteo"_$year-$month-$day.csv' ;" $ip_cluster
 						
 					fi
 				
@@ -271,20 +251,20 @@ done
 
 	let year=year+1
 	let less_year=less_year-1	
-#done
+done
 
 echo
 echo "FIN"
 
-fin_ms=`date +%s%3N`	
+fin_ns=`date +%s%N`	
 fin_s=`date +%s`
 
-let total_ms=$fin_ms-$inicio_ms
+let total_ns=$fin_ns-$inicio_ns
 let total_s=$fin_s-$inicio_s
 total_m=$(($total_s/60))
 
-echo "COPY weatherstation.$table"_ALLMeteo" between $initial_date and $final_date, it has taken: $total_ms [ms], $total_s [s], $total_m [min] from CLUSTER: $ip_cluster" >> timeLoad.dat
+echo "COPY weatherstation.$table"_ALLMeteo" between $initial_date and $final_date, it has taken: $total_ns [ns], $total_s [s], $total_m [min]" >> timeLoad.dat
 
-rm Meteo*
+rm Meteo*.dat
 
 	

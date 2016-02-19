@@ -12,4 +12,23 @@ SELECT windspeed FROM data_2015 WHERE weatherstation_id = 'Meteo4' AND date = '2
 SELECT * FROM data_2015 WHERE weatherstation_id = 'Meteo3' AND date = '2015-03-01' AND date = '2015-03-31', it has taken: 21357907431 [ns], 22 [s], 0 [min]
 SELECT * FROM data_2015_meteo3 WHERE date >= 2015-03-01 AND date <= 2015-03-31, it has taken: 6774563033806 [ns], 482 [s], 8 [min]
 Data downloaded between 2015-03-01 and 2015-03-31, it has taken: 143115421382 [ns], 143 [s], 2 [min]
-SELECT * FROM data_2015 WHERE weatherstation_id = 'Meteo3' AND date = '2015-03-01' AND date = '2015-03-31', it has taken: 856432283751 [ns], 857 [s], 14 [min]
+
+SELECT * FROM data_2015 WHERE weatherstation_id = 'all' AND date = '2015-06-01' AND date = '2015-06-02', it has taken: 95824797606 [ns], 96 [s], 1 [min]
+SELECT * FROM data_2015 WHERE weatherstation_id = 'Meteo3' AND date = '2015-06-01' AND date = '2015-06-02', it has taken: 38335064339 [ns], 38 [s], 0 [min]
+SELECT * FROM data_2015 WHERE weatherstation_id = 'all' AND date = '2015-06-01' AND date = '2015-06-31', it has taken: 91599546029 [ns], 92 [s], 1 [min]
+SELECT * FROM data_2015 WHERE weatherstation_id = 'Meteo3' AND date = '2015-06-01' AND date = '2015-06-31', it has taken: 513577339571 [ns], 514 [s], 8 [min]
+SELECT * FROM data_2015 WHERE weatherstation_id = 'Meteo3' AND date = '2015-06-01' AND date = '2015-06-31', it has taken: 522211128599 [ns], 522 [s], 8 [min]
+SELECT * FROM data_2015 WHERE weatherstation_id = 'all' AND date = '2015-01-01' AND date = '2015-12-31', it has taken: 95000838329 [ns], 95 [s], 1 [min]
+SELECT temperature FROM data_2015 WHERE weatherstation_id = 'Meteo3' AND date = '2015-05-17' AND date = '2015-05-18', it has taken: 10511673849 [ns], 10 [s], 0 [min]
+SELECT * FROM data_2015 WHERE weatherstation_id = 'Meteo3' AND date = '2015-01-01' AND date = '2015-12-31', it has taken: 4585020206093 [ns], 4585 [s], 76 [min]
+SELECT * FROM data_2015 WHERE weatherstation_id = 'all' AND date = '2015-01-01' AND date = '2015-12-31', it has taken: 34 [ms], 0 [s], 0 [min] from CLUSTER: 10.200.117.244
+SELECT * FROM data_2015 WHERE weatherstation_id = 'all' AND date = '2015-01-01' AND date = '2015-01-31', it has taken: 95972 [ms], 96 [s], 1 [min] from CLUSTER: 10.200.117.244
+SELECT * FROM data_2015 WHERE weatherstation_id = 'all' AND date = '2015-01-01' AND date = '2015-12-31', it has taken: 94116 [ms], 95 [s], 1 [min] from CLUSTER: 10.200.117.244
+SELECT * FROM data_2015 WHERE weatherstation_id = 'all' AND date = '2015-01-01' AND date = '2015-12-31', it has taken: 93927 [ms], 94 [s], 1 [min] from CLUSTER: 10.200.117.244
+SELECT  FROM  WHERE weatherstation_id = '' AND date = '' AND date = '', it has taken: 5 [ms], 0 [s], 0 [min] from CLUSTER: 
+SELECT  FROM  WHERE weatherstation_id = '' AND date = '' AND date = '', it has taken: 11 [ms], 0 [s], 0 [min] from CLUSTER: 
+SELECT  FROM  WHERE weatherstation_id = '' AND date = '' AND date = '', it has taken: 3 [ms], 0 [s], 0 [min] from CLUSTER: 
+SELECT * FROM data_2015 WHERE weatherstation_id = 'Meteo4' AND date = '2015-01-01' AND date = '2015-12-31', it has taken: 4515757 [ms], 4516 [s], 75 [min] from CLUSTER: 10.200.117.244
+Data downloaded between 2015-01-01 and 2015-01-02, it has taken: 9143706817 [ns], 9 [s], 0 [min]
+Data downloaded between 2015-06-01 and 2015-06-02, it has taken: 8919680462 [ns], 8 [s], 0 [min]
+Data downloaded between 2015-01-01 and 2015-12-31, it has taken: 1921684704355 [ns], 1922 [s], 32 [min]

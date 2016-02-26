@@ -6,12 +6,13 @@
     <body>
 
 <?php
+
 $cluster = Cassandra::cluster()
-        ->withContactPoints('10.200.117.244')
+        ->withContactPoints('10.195.62.174')
         ->build();
 
 $session = $cluster->connect();
-echo sprintf("<p>Connected to cluster %s</p>", '10.200.117.244');
+echo sprintf("<p>Connected to cluster %s</p>", 'localhost');
 
 $keyspaces = $session->schema()->keyspaces();
 

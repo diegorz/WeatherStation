@@ -69,7 +69,7 @@ while [ "$1" != "" ]; do
 ############################ ALL SENSOR DATA FOR ONE TABLE #################################### 
 
          -qa | -all )		table=$2
-				cqlsh -e "SELECT * FROM weatherstation.$table ;" $ip_cluster > ALL_Data_from_"$table"_"$ip_cluster".dat
+				$CQL -e "SELECT * FROM weatherstation.$table ;" $ip_cluster > ALL_Data_from_"$table"_"$ip_cluster".dat
 
 				fin_ns=`date +%s%N`
 				fin_s=`date +%s`
@@ -128,59 +128,59 @@ while [ $less_year -ge 0 ]; do
 			if [ $weatherstation_id = all ]
 			then 
 				while [ $meteo -le 11 ]; do
-					#echo "meteo $meteo"
+					echo "meteo $meteo"
 
 					############### If month and day < 10 ####################
 					if [ $month -lt 10 ] && [ $day -lt 10 ]
 					then
-						cqlsh -e "SELECT $sensor FROM weatherstation.$table WHERE weatherstation_id = 'Meteo$meteo' AND date = '0$month"-"0$day' ;" $ip_cluster >> "$table"_"$weatherstation_id"_"$sensor"_"$initial_date"_"$final_date".dat
+						$CQL -e "SELECT $sensor FROM weatherstation.$table WHERE weatherstation_id = 'Meteo$meteo' AND date = '0$month"-"0$day' ;" $ip_cluster >> "$table"_"Meteo$meteo"_"$sensor"_"$initial_date"_"$final_date".dat
 					#echo "month and day < 10"		
 
 					####################### Only month < 10 ###################
 					elif [ $month -lt 10 ]
 					then
-						cqlsh -e "SELECT $sensor FROM weatherstation.$table WHERE weatherstation_id = 'Meteo$meteo' AND date = '0$month"-"$day' ;" $ip_cluster >> "$table"_"$weatherstation_id"_"$sensor"_"$initial_date"_"$final_date".dat
+						$CQL -e "SELECT $sensor FROM weatherstation.$table WHERE weatherstation_id = 'Meteo$meteo' AND date = '0$month"-"$day' ;" $ip_cluster >> "$table"_"Meteo$meteo"_"$sensor"_"$initial_date"_"$final_date".dat
 					#echo "month < 10"
 				
 					####################### Only day < 10 #####################
 					elif [ $day -lt 10 ]
 					then
-						cqlsh -e "SELECT $sensor FROM weatherstation.$table WHERE weatherstation_id = 'Meteo$meteo' AND date = '$month"-"0$day' ;" $ip_cluster >> "$table"_"$weatherstation_id"_"$sensor"_"$initial_date"_"$final_date".dat
+						$CQL -e "SELECT $sensor FROM weatherstation.$table WHERE weatherstation_id = 'Meteo$meteo' AND date = '$month"-"0$day' ;" $ip_cluster >> "$table"_"Meteo$meteo"_"$sensor"_"$initial_date"_"$final_date".dat
 					#echo "day < 10"
 	
 					##################### Month and day > 10 ####################
 					else
-						cqlsh -e "SELECT $sensor FROM weatherstation.$table WHERE weatherstation_id = 'Meteo$meteo' AND date = '$month"-"$day' ;" $ip_cluster >> "$table"_"$weatherstation_id"_"$sensor"_"$initial_date"_"$final_date".dat
+						$CQL -e "SELECT $sensor FROM weatherstation.$table WHERE weatherstation_id = 'Meteo$meteo' AND date = '$month"-"$day' ;" $ip_cluster >> "$table"_"Meteo$meteo"_"$sensor"_"$initial_date"_"$final_date".dat
 					#echo "month and day > 10"
 					fi
 	
 					let meteo=meteo+1
 
 				done	
-			
+		
 			############### If ONLY ONE WEATHER STATION  ####################
 			else
 				############### If month and day < 10 ####################
 				if [ $month -lt 10 ] && [ $day -lt 10 ]
 				then
-						cqlsh -e "SELECT $sensor FROM weatherstation.$table WHERE weatherstation_id = 'Meteo$meteo' AND date = '0$month"-"0$day' ;" $ip_cluster >> "$table"_"$weatherstation_id"_"$sensor"_"$initial_date"_"$final_date".dat
+						$CQL -e "SELECT $sensor FROM weatherstation.$table WHERE weatherstation_id = '$weatherstation_id' AND date = '0$month"-"0$day' ;" $ip_cluster >> "$table"_"$weatherstation_id"_"$sensor"_"$initial_date"_"$final_date".dat
                         #echo "month and day < 10"               
 
 				####################### Only month < 10 ###################
 				elif [ $month -lt 10 ]
 				then
-						cqlsh -e "SELECT $sensor FROM weatherstation.$table WHERE weatherstation_id = 'Meteo$meteo' AND date = '0$month"-"$day' ;" $ip_cluster >> "$table"_"$weatherstation_id"_"$sensor"_"$initial_date"_"$final_date".dat
+						$CQL -e "SELECT $sensor FROM weatherstation.$table WHERE weatherstation_id = '$weatherstation_id' AND date = '0$month"-"$day' ;" $ip_cluster >> "$table"_"$weatherstation_id"_"$sensor"_"$initial_date"_"$final_date".dat
 						#echo "month < 10"
 
 				####################### Only day < 10 #####################
 				elif [ $day -lt 10 ]
 				then
-						cqlsh -e "SELECT $sensor FROM weatherstation.$table WHERE weatherstation_id = 'Meteo$meteo' AND date = '$month"-"0$day' ;" $ip_cluster >> "$table"_"$weatherstation_id"_"$sensor"_"$initial_date"_"$final_date".dat
+						$CQL -e "SELECT $sensor FROM weatherstation.$table WHERE weatherstation_id = '$weatherstation_id' AND date = '$month"-"0$day' ;" $ip_cluster >> "$table"_"$weatherstation_id"_"$sensor"_"$initial_date"_"$final_date".dat
 						#echo "day < 10"
 
 				##################### Month and day > 10 ####################
 				else
-						cqlsh -e "SELECT $sensor FROM weatherstation.$table WHERE weatherstation_id = 'Meteo$meteo' AND date = '$month"-"$day' ;" $ip_cluster >> "$table"_"$weatherstation_id"_"$sensor"_"$initial_date"_"$final_date".dat
+						$CQL -e "SELECT $sensor FROM weatherstation.$table WHERE weatherstation_id = '$weatherstation_id' AND date = '$month"-"$day' ;" $ip_cluster >> "$table"_"$weatherstation_id"_"$sensor"_"$initial_date"_"$final_date".dat
 						#echo "month and day > 10"
 				fi
 
@@ -188,6 +188,11 @@ while [ $less_year -ge 0 ]; do
 	
 			let day=day+1
 		
+			if [ $meteo -eq 12 ]
+			then
+				meteo="1"
+			fi
+
 			if [ $month -eq $final_month ]
 			then
 				if [ $day -eq $final_day ]

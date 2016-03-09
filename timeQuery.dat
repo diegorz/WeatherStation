@@ -35,3 +35,14 @@ SELECT * FROM data_2015 WHERE weatherstation_id = 'Meteo4' AND date = '04-06-201
 SELECT * FROM data_2015 WHERE weatherstation_id = 'Meteo4' AND date = '04-06-2015' AND date = '04-06-2015', it has taken: 42005 [ms], 42 [s], 0 [min] from CLUSTER: 10.195.62.173
 SELECT * FROM data_2015 WHERE weatherstation_id = 'Meteo4' AND date = '01-01-2015' AND date = '31-12-2015', it has taken: 10941038 [ms], 10941 [s], 182 [min] from CLUSTER: 10.195.62.173
 SELECT * FROM data_2015 WHERE weatherstation_id = 'Meteo3' AND date = '04-06-2015' AND date = '04-07-2015', it has taken: 1175021 [ms], 1175 [s], 19 [min] from CLUSTER: 10.195.62.172
+SELECT * FROM data_2015 WHERE weatherstation_id = 'all' AND date = '01-04-2015' AND date = '01-05-2015', it has taken: 6511207 [ms], 6512 [s], 108 [min] from CLUSTER: 10.195.62.173
+SELECT * FROM data_2015 WHERE weatherstation_id = 'all' AND date = '01-04-2015' AND date = '01-04-2015', it has taken: 199436 [ms], 200 [s], 3 [min] from CLUSTER: 10.195.62.173
+SELECT humidity FROM data_2015 WHERE weatherstation_id = 'all' AND date = '01-04-2015' AND date = '01-04-2015', it has taken: 129403 [ms], 129 [s], 2 [min] from CLUSTER: 10.195.62.173
+SELECT * FROM data_2015 WHERE weatherstation_id = 'Meteo4' AND date = '01-04-2015' AND date = '01-05-2015', it has taken: 1252040 [ms], 1252 [s], 20 [min] from CLUSTER: 10.195.62.173
+SELECT humidity FROM data_2015 WHERE weatherstation_id = 'all' AND date = '01-04-2015' AND date = '01-05-2015', it has taken: 4113375 [ms], 4113 [s], 68 [min] from CLUSTER: 10.195.62.173
+SELECT humidity FROM data_2015 WHERE weatherstation_id = 'Meteo4' AND date = '01-01-2015' AND date = '31-12-2015', it has taken: 7035840 [ms], 7035 [s], 117 [min] from CLUSTER: 10.195.62.174
+SELECT humidity FROM data_2015 WHERE weatherstation_id = 'Meteo4' AND date = '01-04-2015' AND date = '01-04-2015', it has taken: 25446 [ms], 25 [s], 0 [min] from CLUSTER: 10.195.62.173
+SELECT humidity FROM data_2015 WHERE weatherstation_id = 'all' AND date = '01-01-2015' AND date = '31-12-2015', it has taken: 48204563 [ms], 48205 [s], 803 [min] from CLUSTER: 10.195.62.173
+SELECT * FROM data_2015 WHERE weatherstation_id = 'all' AND date = '01-01-2015' AND date = '31-12-2015', it has taken: 77953507 [ms], 77954 [s], 1299 [min] from CLUSTER: 10.195.62.174
+SELECT * FROM data_2015 WHERE weatherstation_id = 'all' AND date = '01-01-2015' AND date = '31-12-2015', it has taken: 78088305 [ms], 78088 [s], 1301 [min] from CLUSTER: 10.195.62.174
+SELECT * FROM data_2015 WHERE weatherstation_id = 'all' AND date = '01-01-2015' AND date = '31-12-2015', it has taken: 76733046 [ms], 76733 [s], 1278 [min] from CLUSTER: 10.195.62.173

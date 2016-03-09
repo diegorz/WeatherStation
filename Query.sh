@@ -128,7 +128,7 @@ while [ $less_year -ge 0 ]; do
 			if [ $weatherstation_id = all ]
 			then 
 				while [ $meteo -le 11 ]; do
-					echo "meteo $meteo"
+					#echo "meteo $meteo"
 
 					############### If month and day < 10 ####################
 					if [ $month -lt 10 ] && [ $day -lt 10 ]

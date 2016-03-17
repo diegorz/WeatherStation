@@ -18,12 +18,12 @@ while [ "$1" != "" ]; do
 				initial_date=$6
 				final_date=$7
 				
-				initial_year=`echo ${initial_date:6:4}`
-				initial_month=`echo ${initial_date:3:2}`
-				initial_day=`echo ${initial_date:0:2}`
-				final_year=`echo ${final_date:6:4}`
-				final_month=`echo ${final_date:3:2}`
-				final_day=`echo ${final_date:0:2}`
+				initial_year=`echo ${initial_date:0:4}`
+				initial_month=`echo ${initial_date:5:2}`
+				initial_day=`echo ${initial_date:8:2}`
+				final_year=`echo ${final_date:0:4}`
+				final_month=`echo ${final_date:5:2}`
+				final_day=`echo ${final_date:8:2}`
 			
 				initial_month=$((10#$initial_month))
                                 final_month=$((10#$final_month))

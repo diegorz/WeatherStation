@@ -36,12 +36,12 @@ $keyspaces = $session->schema()->keyspaces();
 
 
 $initial_year = '2015';
-$initial_month = '01';
+$initial_month = '04';
 $initial_day  = '01';
 
 $final_year = '2015';
-$final_month = '12';
-$final_day = '31';
+$final_month = '04';
+$final_day = '01';
 
 $month = round($initial_month,1);
 $day = round($initial_day,1);
@@ -50,12 +50,12 @@ $year = $initial_year;
 $less_year = $final_year - $initial_year;
 
 $keyspace = 'weatherstation';
-$table = 'data_2015';
-$meteos = array('Meteo1','Meteo2','Meteo2','Meteo3','Meteo4','Meteo5','Meteo6','Meteo7','Meteo8','Meteo9','Meteo10','Meteo11');
+$table = "data_".$year;
+$meteos = array('Meteo1');//,'Meteo2','Meteo2','Meteo3','Meteo4','Meteo5','Meteo6','Meteo7','Meteo8','Meteo9','Meteo10','Meteo11');
 $sensor = 'humidity, temperature, dewpoint, winddirection, windspeed, pressure';
 
 //QUERY
-$query = "SELECT $sensor FROM $keyspace.$table WHERE weatherstation_id = ? AND date = ?";
+$query = "SELECT date_full, $sensor FROM $keyspace.$table WHERE weatherstation_id = ? AND date = ?";
 
 $select = $session->prepare("$query");
 
@@ -92,8 +92,8 @@ foreach ($meteos as $meteo){
 	                                $result = $session->execute($select, $options);
 
         	                        foreach ($result as $row) {
-	                                        //echo sprintf("%s Date: %s-%s Temperature: %0.2f Humidity: %0.2f Dewpoint: %0.2f Pressure: %0.2f WindSpeed: %0.2f WindDirection: %0.2f \n", $meteo, $year-$date, $row['temperature'],$row['humidity'],$row['dewpoint'], $row['pressure'],$row['windspeed'],$row['winddirection']);
-        	                                //echo '<br>';
+	                                        echo sprintf("%s Date: %s Temperature: %0.2f Humidity: %0.2f Dewpoint: %0.2f Pressure: %0.2f WindSpeed: %0.2f WindDirection: %0.2f \n", $meteo, $row['date_full'], $row['temperature'],$row['humidity'],$row['dewpoint'], $row['pressure'],$row['windspeed'],$row['winddirection']);
+        	                                echo '<br>';
                 	                }
 			
 				}
@@ -107,8 +107,8 @@ foreach ($meteos as $meteo){
                         	        $result = $session->execute($select, $options);
 
                                 	foreach ($result as $row) {
-                                        	//echo sprintf("%s Date: %s-%s Temperature: %0.2f Humidity: %0.2f Dewpoint: %0.2f Pressure: %0.2f WindSpeed: %0.2f WindDirection: %0.2f \n", $meteo, $year, $date, $row['temperature'],$row['humidity'],$row['dewpoint'], $row['pressure'],$row['windspeed'],$row['winddirection']);
-                                 	     	//echo '<br>';
+                                        	echo sprintf("%s Date: %s Temperature: %0.2f Humidity: %0.2f Dewpoint: %0.2f Pressure: %0.2f WindSpeed: %0.2f WindDirection: %0.2f \n", $meteo, strftime("%F\T%T+000",$row['date_full']), $row['temperature'],$row['humidity'],$row['dewpoint'], $row['pressure'],$row['windspeed'],$row['winddirection']);
+                                 	     	echo '<br>';
 	                                }
 
 				}
@@ -122,8 +122,8 @@ foreach ($meteos as $meteo){
         	                        $result = $session->execute($select, $options);
 
                 	                foreach ($result as $row) {
-                        	                //echo sprintf("%s Date: %s-%s Temperature: %0.2f Humidity: %0.2f Dewpoint: %0.2f Pressure: %0.2f WindSpeed: %0.2f WindDirection: %0.2f \n", $meteo, $year, $date, $row['temperature'],$row['humidity'],$row['dewpoint'], $row['pressure'],$row['windspeed'],$row['winddirection']);
-                                        	//echo '<br>';
+                        	                echo sprintf("%s Date: %s Temperature: %0.2f Humidity: %0.2f Dewpoint: %0.2f Pressure: %0.2f WindSpeed: %0.2f WindDirection: %0.2f \n", $meteo, strftime("%F\T%T+000",$row['date_full']), $row['temperature'],$row['humidity'],$row['dewpoint'], $row['pressure'],$row['windspeed'],$row['winddirection']);
+                                        	echo '<br>';
                                 	}
 
 				}
@@ -137,8 +137,8 @@ foreach ($meteos as $meteo){
 					$result = $session->execute($select, $options);
 				
 					foreach ($result as $row) {
-						//echo sprintf("%s Date: %s-%s Temperature: %0.2f Humidity: %0.2f Dewpoint: %0.2f Pressure: %0.2f WindSpeed: %0.2f WindDirection: %0.2f \n", $meteo, $year, $date, $row['temperature'],$row['humidity'],$row['dewpoint'], $row['pressure'],$row['windspeed'],$row['winddirection']);
-						//echo '<br>';
+						echo sprintf("%s Date: %s Temperature: %0.2f Humidity: %0.2f Dewpoint: %0.2f Pressure: %0.2f WindSpeed: %0.2f WindDirection: %0.2f \n", $meteo, strftime("%F\T%T+000",$row['date_full']),$row['temperature'],$row['humidity'],$row['dewpoint'], $row['pressure'],$row['windspeed'],$row['winddirection']);
+						echo '<br>';
 					}
 			
 				}
@@ -178,6 +178,9 @@ $execution_time = ($time_end - $time_start);
 echo sprintf("Total execution time: %s[s] \n", round($execution_time,3));
 echo '<br>';
 
+date_default_timezone_set('UTC');
+echo $time_real = gmdate("Y-m-d\TH:i:s",(1427852931000-hexdec(0x01b21dd213814000)/10000));
+//echo gmdate("Y-m-d\TH:i:s",1427852931000-time());
 //foreach ($result as $row) {
 //    echo sprintf("%s Date: %s Temperature: %0.2f Humidity: %0.2f Dewpoint: %0.2f Pressure: %0.2f WindSpeed: %0.2f WindDirection: %0.2f \n", $meteo, $date, $row['temperature'],$row['humidity'],$row['dewpoint'], $row['pressure'],$row['windspeed'],$row['winddirection']);
 //    echo '<br>';

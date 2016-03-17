@@ -12,23 +12,20 @@
 <div id="content"> 
    <script type='text/JavaScript' src='scripts/scw.js'></script> 
 	<br/><br/> 
-	<form id="meteo_form" action='advanced_data.php' method='get'> 
+	<form id="meteo_form" action='advanced_data.php' method='post'> 
            <table cellpadding='5' cellspacing='0' > 
 	      <tr> 
 		 <th class='primary'> Range of Dates</th> 
-		 <th></th>
-		 <th></th>
 		 <th class='primary'> Sensor</th> 
 		 <th class='primary'> Weather Station</th> 
 		 <th class='primary'> Format</th> 
 	      </tr> 
 	      <tr> 
-		<td><input width="50" type="text" name="start" value=' 2015-01-01' onclick='scwShow(this, event); return false;'/></td> 
-		<td> 
-		<td><input width="50" type="text" name="end" value=' 2015-12-31' onclick='scwShow(this, event); return false;'/></td>
-		<td>
-	
-			<input type="checkbox" name='sensors[]' value="humidity" >Humidity
+		<td>	<input width="50" type="text" name="start" value='2015-04-01' onclick='scwShow(this, event); return false;'/> 
+			<input width="50" type="text" name="end" value='2015-04-02' onclick='scwShow(this, event); return false;'/>
+		</td>
+		
+		<td>	<input type="checkbox" name='sensors[]' value="humidity" >Humidity
 			<br>
 			<input type="checkbox" name='sensors[]' value="temperature" >Temperature
 			<br>
@@ -39,7 +36,7 @@
 			<input type="checkbox" name='sensors[]' value="windspeed" >Wind Speed
 			<br>
 			<input type="checkbox" name='sensors[]' value="pressure" >Pressure
-			
+		</td>	
 			<!--	<select name="idsensor"> 
 				<option value="1">Humidity</option> 
 				<option value="8">Pressure</option> 
@@ -48,13 +45,14 @@
 				<option value="5">Wind Direction</option> 
 				<option value="6">Wind Speed</option> 
 				<option value="99">All</option> 
-			</select>	--> 
-		 </td> 
-	    	 <td> 
-			<input type="checkbox" name='meteos[]' value="Meteo1" >MeteoTB1
-                        <br>
+			</select>	-->   
+	    	
+		 <td> 	<input type="checkbox" name='meteos[]' value="Meteo1" >MeteoTB1
+			<br>
                         <input type="checkbox" name='meteos[]' value="Meteo2" >MeteoTB2
                         <br>
+                        <input type="checkbox" name='meteos[]' value="Meteo3" >MeteoOSF
+			<br>
                         <input type="checkbox" name='meteos[]' value="Meteo4" >MeteoItinerant
                         <br>
                         <input type="checkbox" name='meteos[]' value="Meteo5" >Meteo201
@@ -70,9 +68,7 @@
                         <input type="checkbox" name='meteos[]' value="Meteo10" >Meteo129
                         <br>
                         <input type="checkbox" name='meteos[]' value="Meteo11" >Meteo201
-			<br>
-			<input type="checkbox" name='meteos[]' value="Meteo3" >MeteoOSF
-
+		</td>
 			<!--	<select name="idweatherstation"> 
 				<option value="1">MeteoTB1</option> 
 				<option value="2">MeteoTB2</option> 
@@ -86,7 +82,7 @@
 				<option value="11">Meteo130</option>
 				<option value="3">MeteoOSF</option>
 			</select>	-->
-		 </td> 
+		 
 	    	 <td> 
 			<select name="format"> 
 				<option value="txt">TXT</option> 
@@ -97,7 +93,7 @@
 		 </td> 
 	      </tr>	
 	      <tr> 
-		<td colspan='4' style='text-align: left'> <input type='submit' value='Submit'/> </td> 
+		<td colspan='4' style='text-align: center'> <input type='submit' value='Submit'/> </td> 
 	      </tr> 
  	   </table>
 	</form> 

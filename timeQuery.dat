@@ -46,3 +46,4 @@ SELECT humidity FROM data_2015 WHERE weatherstation_id = 'all' AND date = '01-01
 SELECT * FROM data_2015 WHERE weatherstation_id = 'all' AND date = '01-01-2015' AND date = '31-12-2015', it has taken: 77953507 [ms], 77954 [s], 1299 [min] from CLUSTER: 10.195.62.174
 SELECT * FROM data_2015 WHERE weatherstation_id = 'all' AND date = '01-01-2015' AND date = '31-12-2015', it has taken: 78088305 [ms], 78088 [s], 1301 [min] from CLUSTER: 10.195.62.174
 SELECT * FROM data_2015 WHERE weatherstation_id = 'all' AND date = '01-01-2015' AND date = '31-12-2015', it has taken: 76733046 [ms], 76733 [s], 1278 [min] from CLUSTER: 10.195.62.173
+SELECT * FROM data_2015 WHERE weatherstation_id = 'Meteo3' AND date = '2015-04-01' AND date = '2015-04-01', it has taken: 8169 [ms], 8 [s], 0 [min] from CLUSTER: 10.195.62.175

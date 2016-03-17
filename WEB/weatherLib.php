@@ -467,56 +467,59 @@
 	}
 
 	function getWeatherDataCassandra($start, $end, $format, $idweatherstation, $idsensor, $header = true){
-		
+		$rawData = "";		
+	
 		$cluster = Cassandra::cluster()		
 			->withContactPoints('10.195.62.172','10.195.62.173','10.195.62.174','10.195.62.175','10.195.62.176')
 		        ->build();
 
 		$session = $cluster->connect() or die ("Error connecting to the database");
+	
+		$access = date("Y/m/d H:i:s");
 		syslog(LOG_WARNING, "Connected to JAO CLUSTER: $access {$_SERVER['REMOTE_ADDR']} ({$_SERVER['HTTP_USER_AGENT']})");
 
 		$debug = 1;
 
 		$carry_return ="\r\n";
-		$weatherstationName = $idweatherstation;
-		$headerData = "# weather station data of : " . $weatherstationName . $carry_return;
 
-		$initial_year = substr($start, 1, 4);
-                $initial_month = substr($start, 6, 2);
-                $initial_day  = substr($start, 9, 2);
+		$initial_year = substr($start, 0, 4);
+                $initial_month = substr($start, 5, 2);
+                $initial_day  = substr($start, 8, 2);
 
-                $final_year = substr($end, 1 , 4)
-                $final_month = substr($end, 6 , 2)
-                $final_day = substr($end, 9 , 2)
+                $final_year = substr($end, 0 , 4);
+                $final_month = substr($end, 5 , 2);
+                $final_day = substr($end, 8 , 2);
 	
 		$keyspace = 'weatherstation';
-
-		if ( !empty($_GET['idsensor']) && is_array($_GET['idsensor']) ) {
-                        $sensors = array_shift($_GET['idsensor'])
-                        foreach ( $_GET["idsensor"] as $sensor ) {
+		
+		if ( !empty($idsensor) && is_array($idsensor) ) {
+                        $sensors = array_shift($idsensor);
+                        foreach ( $idsensor as $sensor ) {
                                 $sensors = $sensors . ', ' . $sensor;
                         }
                         unset($sensor);
                 }
+		else
+			die ("Sensors NULL");
 
-		//QUERY
-		$query = "SELECT humidity FROM weatherstation.data_2015 WHERE weatherstation_id = ? AND date = ?";
-	
-		$select = $session->prepare("$query");
 
-		//foreach ($idweatherstation as $meteo){
-		$meteo = $idweatherstation;
-		
-			$table = 'data_' . '$year';
-
+		if ( !empty($idweatherstation) && is_array($idweatherstation) ) 
+               	     foreach ( $idweatherstation as $meteo ) {
+			
+			$year = $initial_year;	
 		        $month = round($initial_month,1);
 		        $day = round($initial_day,1);
-		        $year = $initial_year;
 
 		        $less_year = $final_year - $initial_year;
 
-		        //$query = "SELECT $sensors FROM $keyspace.$table WHERE weatherstation_id = ? AND date = ?";
+		        $table = "data_" . $year;
 
+			$query = "SELECT date_full, $sensors FROM $keyspace.$table WHERE weatherstation_id = ? AND date = ?";
+
+			$select = $session->prepare("$query");
+	
+			$time_start = microtime(true);
+			
 			while ( $less_year >= 0 ){
 
                			if ( $month == 13 ) {
@@ -543,7 +546,7 @@
 				                        syslog(LOG_WARNING, "CQL executed: $access {$_SERVER['REMOTE_ADDR']} ({$_SERVER['HTTP_USER_AGENT']})");
 
 							foreach ($result as $row) {
-								$rawData .= sprintf("%s; %s-%s; %0.3f; %0.3f; %0.3f; %0.3f; %0.3f; %0.3f\r\n", $meteo, $year, $date, $row['temperature'],$row['humidity'],$row['dewpoint'], $row['windspeed'],$row['winddirection'], $row['pressure']);
+								$rawData .= sprintf("%s; %s; %0.3f; %0.3f; %0.3f; %0.3f; %0.3f; %0.3f\r\n", $meteo,$row['date_full'],$row['temperature'],$row['humidity'],$row['dewpoint'], $row['windspeed'],$row['winddirection'], $row['pressure']);
         	                               		}
 
 							$access = date("Y/m/d H:i:s");
@@ -563,7 +566,7 @@
 				                        syslog(LOG_WARNING, "CQL executed: $access {$_SERVER['REMOTE_ADDR']} ({$_SERVER['HTTP_USER_AGENT']})");		
 		
 	                                        	foreach ($result as $row) {
-								$rawData .= sprintf("%s; %s-%s; %0.3f; %0.3f; %0.3f; %0.3f; %0.3f; %0.3f\r\n", $meteo, $year, $date, $row['temperature'],$row['humidity'],$row['dewpoint'],$row['windspeed'],$row['winddirection'],$row['pressure']);
+								$rawData .= sprintf("%s; %s; %0.3f; %0.3f; %0.3f; %0.3f; %0.3f; %0.3f\r\n", $meteo,$row['date_full'],$row['temperature'],$row['humidity'],$row['dewpoint'],$row['windspeed'],$row['winddirection'],$row['pressure']);
                                         		}
 
 							$access = date("Y/m/d H:i:s");
@@ -583,7 +586,7 @@
 				                        syslog(LOG_WARNING, "CQL executed: $access {$_SERVER['REMOTE_ADDR']} ({$_SERVER['HTTP_USER_AGENT']})");
 
 	                                        	foreach ($result as $row) {
-        	                	               		$rawData .= sprintf("%s; %s-%s; %0.3f; %0.3f; %0.3f; %0.3f; %0.3f; %0.3f\r\n", $meteo, $year, $date, $row['temperature'],$row['humidity'],$row['dewpoint'],$row['windspeed'],$row['winddirection'],$row['pressure']); 
+        	                	               		$rawData .= sprintf("%s; %s; %0.3f; %0.3f; %0.3f; %0.3f; %0.3f; %0.3f\r\n", $meteo,$row['date_full'],$row['temperature'],$row['humidity'],$row['dewpoint'],$row['windspeed'],$row['winddirection'],$row['pressure']); 
 							}
 				
 							$access = date("Y/m/d H:i:s");
@@ -603,7 +606,7 @@
 				                        syslog(LOG_WARNING, "CQL executed: $access {$_SERVER['REMOTE_ADDR']} ({$_SERVER['HTTP_USER_AGENT']})");
 
                         		                foreach ($result as $row) {
-                        	        	                $rawData .= sprintf("%s; %s-%s; %0.3f; %0.3f; %0.3f; %0.3f; %0.3f; %0.3f\r\n", $meteo, $year, $date, $row['temperature'],$row['humidity'],$row['dewpoint'],$row['windspeed'],$row['winddirection'],$row['pressure']);
+                        	        	                $rawData .= sprintf("%s; %s; %0.3f; %0.3f; %0.3f; %0.3f; %0.3f; %0.3f\r\n", $meteo,$row['date_full'],$row['temperature'],$row['humidity'],$row['dewpoint'],$row['windspeed'],$row['winddirection'],$row['pressure']);
         	                                	}
 							
 							$access = date("Y/m/d H:i:s");
@@ -627,25 +630,40 @@
 	                	}
 	                	$year = $year + 1;
 	        	        $less_year = $less_year - 1;
- 			}
-		//}
+ 				}
+					
+			$time_end = microtime (true);
+			}
 
+			else
+				die ("WeatherStation NULL");	
+		
+                        $weatherstationName = array_shift($idweatherstation);
+			foreach ( $idweatherstation as $weatherstation ) {
+                                $weatherstationName = $weatherstationName . ', ' . $weatherstation;
+                        }
+                        unset($weatherstation);
 
+	                $headerData = "# weather station data of : " . $weatherstationName . $carry_return;
+	
 			if($debug) 
-				$headerData .= "# CQL=" . $query . $carry_return;
+				$headerData .= "# CQL= " . "SELECT " . $sensors . " FROM weatherstation.data_2015  WHERE weatherstationid = " . $weatherstationName . " AND date >= " . $start . " AND date <= " . $end . $carry_return;
 			
 			$headerData .= "#" . $carry_return;
 			$headerData .= "# WeatherStation; Date ; Humidity [%]; Temperature [celsius]; Dewpoint [celsius]; Wind Direction [degree]; Wind Speed [m/s]; Pressure [hPa]" . $carry_return;
 			$headerData .= "#" . $carry_return;
+			
+			$execution_time = round(($time_end - $time_start),3);
 
-			$rawData = "";
+			$access = date("Y/m/d H:i:s");
+			syslog(LOG_WARNING, "Execution Time: $execution_time [s], $access {$_SERVER['REMOTE_ADDR']} ({$_SERVER['HTTP_USER_AGENT']})");
 
 			if($header)
 				return $headerData . $rawData;
 			else 
 				return $rawData;
+			
 	}
-
 
 	function wind_direction_correction($val)
 	{

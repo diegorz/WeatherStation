@@ -1,28 +1,23 @@
 <?php 
-	set_time_limit(600);
+	//set_time_limit(600000);
 	include_once('weatherLib.php');
 	$today = date("Y-m-j");	
-	//var_dump($_GET);	
-	if(isset($_GET['start'], $_GET['end']))
+	//var_dump($_POST);	
+	if(isset($_POST['start'], $_POST['end']))
 	{
-		//$start = $_GET['start'];
-		//$end = $_GET['end'];
-		$start = '2015-04-01';		
-		$end = '2015-04-01';
+		$start = $_POST['start'];
+		$end = $_POST['end'];
 
 		//$end  = date("Y-m-d", mktime(0, 0, 0, $month, $day, $year));
 		//$start_date = new DateTime(trim($start));
 		//$start_date->modify("+1 day");
 		//$end = $start_date->format("Y-m-d");
 		
-		//$format = $_GET['format'];
-		$format = 'txt';		
+		$format = $_POST['format'];
 
-		//$idweatherstation = $_GET['meteos'];
-		$idweatherstation = 'Meteo3';
+		$idweatherstation = $_POST['meteos'];
 
-		//$idsensor = $_GET['sensors']	
-		$idsensor = 'humidity';
+		$idsensor = $_POST['sensors'];	
 
 		//check value for parameters
 		//echo $format . "<br>";
